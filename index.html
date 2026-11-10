@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revolution Macro | Bee Swarm Simulator Macro</title>
+<meta name="description" content="Automate Bee Swarm Simulator with Revolution Macro. Explore AI-powered gathering, quests, planters, and tools to make more of every session.">
+<meta name="theme-color" content="#1769d9">
+<link rel="icon" href="https://revolutionmacro.com/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050912;
+  --bg-2:#080d18;
+  --fg:#f5f8ff;
+  --card:#0d1320;
+  --muted:#7f8b9d;
+  --blue:#2f7bf6;
+  --blue-soft:#7db6ff;
+  --line:rgba(147,197,253,.12);
+  --nav-h:88px;
+  --maxw:84rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:"Fredoka",ui-sans-serif,system-ui,sans-serif;
+  font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-weight:500;margin:0}
+h1{letter-spacing:.005em}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue-soft);outline-offset:3px;border-radius:8px}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
+.grad{background:linear-gradient(92deg,#a8d0ff 0%,#5a9dff 48%,var(--blue) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted)}
+
+/* ---------- header ---------- */
+.site-header{
+  position:fixed;inset:0 0 auto 0;z-index:60;
+  padding:18px 0;
+  background:linear-gradient(180deg,rgba(3,4,7,.96),rgba(3,4,7,.78) 68%,rgba(3,4,7,0));
+  backdrop-filter:blur(16px) saturate(1.7);
+  border-bottom:1px solid rgba(255,255,255,.055);
+}
+.nav{display:flex;align-items:center;gap:20px}
+.nav-wordmark{display:flex;align-items:center;gap:11px;flex:none;
+  font-weight:600;font-size:1.16rem;letter-spacing:-.02em;line-height:1}
+.nav-wordmark .mark{width:32px;height:32px;flex:none;object-fit:contain;border-radius:9px;
+  background:rgba(255,255,255,.06);padding:3px;border:1px solid rgba(255,255,255,.1)}
+.nav-wordmark span{
+  background:linear-gradient(92deg,#fff 0%,#cfe4ff 60%,#9fc6ff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:none;gap:2px;margin-inline:auto;font-size:.9rem;color:rgba(255,255,255,.7)}
+.nav-links a{padding:8px 15px;border-radius:999px;transition:color .2s,background .2s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.nav-links a[aria-current]{
+  color:#fff;border:1px solid rgba(255,255,255,.1);
+  background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(255,255,255,.05));
+}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.nav-burger{display:inline-flex;height:44px;width:44px;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:999px}
+.mobile-nav{display:none;flex-direction:column;gap:2px;padding:14px 24px 22px;
+  background:var(--bg-2);border-bottom:1px solid rgba(255,255,255,.08)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:12px 10px;border-radius:12px;color:rgba(255,255,255,.82)}
+.mobile-nav a:hover{background:rgba(255,255,255,.06)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  height:54px;padding:0 28px;border-radius:999px;font-weight:500;font-size:1rem;
+  border:1px solid rgba(255,255,255,.12);transition:transform .18s,filter .18s,background .18s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{
+  background:linear-gradient(180deg,#4a94ff,#1f61ff);
+  border-color:rgba(255,255,255,.26);color:#fff;
+  box-shadow:0 14px 34px -12px rgba(31,97,255,.85),inset 0 1px 0 rgba(255,255,255,.4);
+}
+.btn-primary:hover{filter:brightness(1.09)}
+.btn-ghost{background:rgba(255,255,255,.055);color:#f5f5f5;backdrop-filter:blur(10px)}
+.btn-ghost:hover{background:rgba(255,255,255,.11)}
+.btn svg{width:20px;height:20px;flex:none}
+.btn--sm{height:44px;padding:0 20px;font-size:.9rem}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;text-align:center;
+  padding-top:calc(var(--nav-h) + 84px);padding-bottom:0}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-2;
+  background:
+    radial-gradient(58% 42% at 50% 4%,rgba(47,123,246,.34),transparent 72%),
+    radial-gradient(48% 42% at 8% 26%,rgba(56,189,248,.15),transparent 72%),
+    radial-gradient(48% 42% at 92% 22%,rgba(99,102,241,.16),transparent 72%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.4;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:76px 76px;
+  mask-image:radial-gradient(72% 58% at 50% 26%,#000 18%,transparent 76%);
+  -webkit-mask-image:radial-gradient(72% 58% at 50% 26%,#000 18%,transparent 76%);
+}
+.hero h1{font-size:clamp(2.1rem,7vw,4.6rem);line-height:1.07;max-width:19ch;margin-inline:auto}
+.hero p{max-width:54ch;margin:24px auto 0;font-size:clamp(1rem,1.9vw,1.25rem);
+  line-height:1.62;color:#9aa6b8}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:36px}
+
+/* laptop */
+.laptop-stage{position:relative;margin-top:70px;perspective:1800px}
+.laptop{width:min(1200px,96vw);margin-inline:auto;
+  transform:rotateX(7deg);transform-origin:50% 100%}
+.laptop-screen{
+  border:13px solid #191f2c;border-bottom:0;border-radius:24px 24px 8px 8px;
+  background:#03050a;overflow:hidden;aspect-ratio:16/10;
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),0 0 90px -10px rgba(47,123,246,.45);
+}
+.laptop-screen video{width:100%;height:100%;object-fit:cover}
+.laptop-base{height:20px;border-radius:0 0 18px 18px;
+  background:linear-gradient(180deg,#333c50,#1a2130 55%,#0b1018);position:relative}
+.laptop-base::after{content:"";position:absolute;left:50%;top:0;translate:-50% 0;
+  width:140px;height:7px;border-radius:0 0 9px 9px;background:#070b12}
+.hero-fade{position:absolute;left:0;right:0;bottom:0;height:170px;z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--bg) 88%)}
+
+/* ---------- shared ---------- */
+section{position:relative}
+.sec-title{font-size:clamp(2rem,4.4vw,3.5rem);line-height:1.06;letter-spacing:-.022em}
+.sec-sub{margin-top:18px;color:var(--muted);font-size:clamp(1rem,1.6vw,1.15rem);
+  line-height:1.6;max-width:56ch}
+.docs-link{color:var(--blue-soft);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px;text-decoration-color:rgba(125,182,255,.45)}
+.docs-link:hover{color:#fff;text-decoration-color:#fff}
+.tons{font-style:italic;position:relative;display:inline-block;color:#fff}
+.tons::after{content:"tons";position:absolute;inset:0;color:rgba(255,255,255,.28);
+  filter:blur(7px);z-index:-1}
+
+/* ---------- features ---------- */
+.features{padding:120px 0 40px}
+.features-grid{display:grid}
+.features-head .rule{display:none}
+.feature{padding:46px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.feature:last-child{border-bottom:0}
+.feature h3{font-size:clamp(1.4rem,2.4vw,2.05rem);line-height:1.14;letter-spacing:-.015em}
+.feature p{margin-top:16px;color:#9aa6b8;font-size:1.0625rem;line-height:1.65}
+.feature ul{margin-top:24px;display:grid;gap:13px;color:#c8d2e0;font-size:1rem}
+.feature li{display:flex;gap:13px;align-items:flex-start}
+.feature li::before{content:"";flex:none;width:6px;height:6px;margin-top:.6em;
+  border-radius:50%;background:var(--blue)}
+.feature img{margin-top:34px;border-radius:14px;width:100%;display:block;
+  aspect-ratio:1210/886;object-fit:cover;object-position:top left;background:#0a1120;
+  box-shadow:0 34px 64px -22px rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.07)}
+.features-media{display:none}
+
+@media(min-width:1024px){
+  .features{padding:0}
+  .features-grid{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:5rem}
+  .features-left{grid-column:1;grid-row:1;display:grid;position:relative}
+  .features-head{
+    grid-column:1;grid-row:1;align-self:start;z-index:3;pointer-events:none;
+    position:sticky;top:0;height:100svh;padding-top:9.5rem;
+    background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 58%,
+      rgba(5,9,18,.92) 70%,rgba(5,9,18,.55) 82%,transparent 100%);
+  }
+  .features-head .rule{display:block;height:1px;width:100%;
+    background:rgba(255,255,255,.16);margin-top:40px}
+  .features-articles{grid-column:1;grid-row:1;padding-top:15.5rem}
+  .feature{min-height:54svh;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 0 46px}
+  .feature:first-child{min-height:56svh}
+  .feature:last-child{min-height:calc(100svh - 15.5rem);justify-content:flex-start;
+    padding-top:2rem;border-bottom:0}
+  .feature img{display:none}
+  .features-media{
+    display:flex;grid-column:2;grid-row:1;align-self:start;
+    position:sticky;top:6rem;height:calc(100svh - 12rem);align-items:center;
+  }
+  .features-media-inner{position:relative;width:100%;aspect-ratio:1210/886}
+  .features-media img{
+    position:absolute;inset:0;width:100%;height:100%;max-height:100%;
+    object-fit:contain;object-position:center;
+    border-radius:18px;opacity:0;pointer-events:none;transition:opacity .35s linear;
+    filter:drop-shadow(0 40px 70px rgba(0,0,0,.85));
+  }
+  .features-media img.active{opacity:1}
+}
+
+/* ---------- materials : equal 2x2 cells, identical geometry ---------- */
+.materials{padding:120px 0}
+.materials-grid{display:grid;gap:22px;margin-top:46px}
+@media(min-width:768px){
+  .materials-grid{grid-template-columns:1fr 1fr}
+  .materials-card{height:470px}
+}
+.materials-card{
+  position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);
+  background:linear-gradient(160deg,#0c1526,#060a12 70%);height:390px;
+  transition:border-color .25s,transform .25s;isolation:isolate;
+}
+.materials-card:hover{border-color:rgba(125,182,255,.42);transform:translateY(-3px)}
+.materials-card .copy{position:absolute;z-index:4;top:0;left:0;right:0;padding:28px;max-width:70%}
+.materials-card h3{font-size:1.45rem;letter-spacing:-.01em}
+.materials-card p{margin-top:10px;color:#b6c2d2;font-size:.97rem;line-height:1.6;
+  text-shadow:0 1px 10px rgba(0,0,0,.85)}
+.materials-art{position:absolute;inset:0;z-index:0;width:100%;height:100%;
+  object-fit:cover;pointer-events:none}
+.materials-art--bug{object-position:bottom left}
+.materials-art--vic,.materials-art--mondo{object-position:center bottom}
+.materials-art--memory{object-position:center}
+.materials-card::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,10,18,.92) 0%,rgba(6,10,18,.45) 42%,transparent 72%)}
+/* one geometry for every screenshot so cards always align */
+.materials-app-screenshot{
+  position:absolute;z-index:3;right:-30px;bottom:-30px;width:64%;
+  aspect-ratio:1210/886;border-radius:12px;background:#0a1120;
+  border:1px solid rgba(255,255,255,.14);object-fit:cover;object-position:top left;
+  box-shadow:0 30px 56px -14px rgba(0,0,0,.95);transform:rotate(-2deg);
+}
+.materials-card--memory .materials-app-screenshot{transform:rotate(2deg)}
+
+/* ---------- quests ---------- */
+.quests{padding:120px 0;
+  background:radial-gradient(58% 60% at 18% 45%,rgba(31,97,255,.16),transparent 72%)}
+.quests-grid{display:grid;gap:52px;align-items:center}
+@media(min-width:1024px){.quests-grid{grid-template-columns:1fr 1.15fr;gap:68px}}
+.quests dl{margin-top:32px;display:grid;gap:20px}
+.quests dt{font-weight:500;font-size:1.05rem}
+.quests dd{margin:5px 0 0;color:var(--muted);font-size:.98rem;line-height:1.6}
+.video-frame{position:relative;border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);background:#071124;
+  box-shadow:0 44px 84px -32px rgba(0,0,0,.92);aspect-ratio:14/8}
+.quests-video{width:100%;height:100%;object-fit:cover;background:#071124}
+
+/* ---------- endgame ---------- */
+.endgame{padding:120px 0}
+.endgame-grid{display:grid;gap:22px;margin-top:46px}
+@media(min-width:900px){.endgame-grid{grid-template-columns:repeat(3,1fr)}}
+.endgame-card{
+  position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);
+  background:linear-gradient(180deg,#0b1322,#060a12);transition:border-color .25s,transform .25s;
+}
+.endgame-card:hover{border-color:rgba(125,182,255,.42);transform:translateY(-3px)}
+.endgame-card::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;z-index:3;
+  background:linear-gradient(90deg,transparent,rgba(125,182,255,.75),transparent)}
+.endgame-shot{margin:0;aspect-ratio:1210/886;overflow:hidden;background:#0a1120;
+  border-bottom:1px solid rgba(255,255,255,.07)}
+.endgame-shot img{width:100%;height:100%;object-fit:cover;object-position:top left;
+  transition:transform .5s ease}
+.endgame-card:hover .endgame-shot img{transform:scale(1.03)}
+.endgame-copy{padding:22px 24px 26px}
+.endgame-copy h3{font-size:1.28rem}
+.endgame-copy p{margin-top:10px;color:var(--muted);font-size:.97rem;line-height:1.6}
+
+/* ---------- faq ---------- */
+.faq{padding:120px 0;overflow:hidden;text-align:center}
+.faq .sec-sub{margin-inline:auto}
+.marquee{overflow:hidden;margin-top:38px;
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee-track{display:flex;gap:20px;width:max-content;animation:slide 62s linear infinite}
+.marquee-track.rev{animation-direction:reverse;animation-duration:54s}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.faq-card{width:350px;flex:none;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:26px;text-align:left}
+.faq-card h3{font-size:1.1rem;line-height:1.35}
+.faq-card p{margin-top:10px;color:var(--muted);font-size:.95rem;line-height:1.62}
+
+/* ---------- download ---------- */
+.download{padding:150px 0;text-align:center;overflow:hidden}
+.download::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(55% 55% at 50% 48%,rgba(31,97,255,.32),transparent 74%)}
+.download h2{font-size:clamp(2.1rem,5vw,3.9rem);line-height:1.05;letter-spacing:-.02em}
+.download p{margin:22px auto 0;max-width:48ch;color:#b3bfd0}
+.download .hero-cta{margin-top:34px}
+.tiny{margin-top:24px;font-size:.8rem;letter-spacing:.05em;color:#8593a6}
+
+/* ---------- footer ---------- */
+.site-footer{position:relative;border-top:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(180deg,#050912,#03060c);padding:76px 0 40px;overflow:hidden}
+.footer-grid{display:grid;gap:48px}
+@media(min-width:768px){.footer-grid{grid-template-columns:1.45fr 1fr}}
+.footer-brand{display:flex;align-items:center;gap:14px}
+.footer-brand img{width:54px;height:54px;object-fit:contain;border-radius:14px;
+  background:rgba(255,255,255,.05);padding:5px;border:1px solid rgba(255,255,255,.08)}
+.footer-brand span{font-size:1.18rem;line-height:1.1;font-weight:500}
+.tagline{margin-top:18px;color:var(--muted);font-size:.95rem;max-width:30ch}
+.footer-nav{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.footer-nav h3{font-size:.76rem;letter-spacing:.15em;text-transform:uppercase;
+  color:#8b98ab;font-weight:500}
+.footer-nav ul{margin-top:15px;display:grid;gap:11px;font-size:.95rem}
+.footer-nav a{color:#c3cddb;display:inline-flex;align-items:center;gap:6px}
+.footer-nav a:hover{color:#fff}
+.footer-bottom{margin-top:60px;padding-top:26px;border-top:1px solid rgba(255,255,255,.07);
+  display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:space-between;
+  font-size:.85rem;color:#8b98ab}
+.footer-legal{display:flex;flex-wrap:wrap;gap:8px 20px}
+.footer-legal a:hover{color:#fff}
+.heart{color:#ff5c7a}
+
+/* ---------- reveal ---------- */
+[data-rise]{opacity:0;transform:translateY(22px);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+[data-rise].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  [data-rise]{opacity:1;transform:none;transition:none}
+  .marquee-track{animation:none}
+  html{scroll-behavior:auto}
+}
+@media(min-width:1024px){
+  .nav-links{display:flex}
+  .nav-burger{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="nav">
+      <a class="nav-wordmark" href="/" aria-label="Revolution Macro home">
+        <img class="mark" src="https://revolutionmacro.com/images/brand/logo.webp" alt="" width="384" height="384">
+        <span>Revolution</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="/" aria-current="page">Home</a>
+        <a href="/pro">Pro</a>
+        <a href="/download">Download</a>
+        <a href="/docs/">Documentation</a>
+        <a href="https://discord.com/invite/HDJk6aEyt4" target="_blank" rel="noopener">Discord</a>
+      </nav>
+      <div class="nav-right">
+        <a class="btn btn-ghost btn--sm" href="https://dashboard.revolutionmacro.com/" target="_blank" rel="noopener">Sign in</a>
+        <button class="nav-burger" id="burger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <a href="/">Home</a><a href="/pro">Pro</a><a href="/download">Download</a>
+    <a href="/docs/">Documentation</a><a href="https://discord.com/invite/HDJk6aEyt4">Discord</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1 data-rise>The <span class="grad">last macro</span> you'll<br>ever use</h1>
+      <p data-rise>Revolution is the next-generation macro for Bee Swarm Simulator. Boost your honey-making with state-of-the-art AI-powered features.</p>
+      <div class="hero-cta" data-rise>
+        <a class="btn btn-primary" href="https://revolutionmacro.com/download">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 5h2.4v6.3l2.6-2.6 1.7 1.7-5.5 5.5-5.5-5.5 1.7-1.7 2.6 2.6z"/></svg>
+          Download for Windows
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://discord.com/invite/HDJk6aEyt4" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37a19.8 19.8 0 00-4.89-1.52.07.07 0 00-.07.04c-.21.37-.45.86-.61 1.25a18.3 18.3 0 00-5.49 0c-.16-.39-.4-.88-.62-1.25a.08.08 0 00-.08-.04 19.7 19.7 0 00-4.88 1.52.07.07 0 00-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 00.03.05 19.9 19.9 0 006 3.03.08.08 0 00.08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 00-.04-.11 13.1 13.1 0 01-1.87-.89.08.08 0 01-.01-.13l.37-.29a.07.07 0 01.08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 01.08.01l.37.29a.08.08 0 01-.01.13c-.6.35-1.22.65-1.87.89a.08.08 0 00-.04.11c.36.7.77 1.36 1.22 1.99a.08.08 0 00.09.03 19.8 19.8 0 006-3.03.08.08 0 00.03-.05c.5-5.18-.84-9.68-3.55-13.66a.06.06 0 00-.03-.03zM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42zm7.97 0c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42z"/></svg>
+          Join Discord
+        </a>
+      </div>
+    </div>
+    <div class="laptop-stage" data-rise>
+      <div class="laptop">
+        <div class="laptop-screen">
+          <video src="https://revolutionmacro.com/videos/blue-boost-30s.mp4" muted loop playsinline autoplay preload="auto" aria-label="Revolution blue hive boost demo"></video>
+        </div>
+        <div class="laptop-base"></div>
+      </div>
+    </div>
+    <div class="hero-fade"></div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="features-grid">
+        <div class="features-left">
+          <div class="features-head">
+            <h2 class="sec-title" data-rise>Make <em class="tons">tons</em> of <span style="color:#F3B215">honey</span></h2>
+            <div class="rule" data-rise></div>
+          </div>
+
+          <div class="features-articles">
+            <article class="feature" data-shot="0">
+              <h3>Game-Changing <span style="color:#60a5fa">AI Gathering</span></h3>
+              <p>Revolution is rewriting the meta with a groundbreaking <a class="docs-link" href="https://revolutionmacro.com/docs/gathering/set-up-ai-gather/">movement system</a> that walks from token to token. Instead of moving in a fixed pattern, the macro locks onto the best tokens for maximum honey gains.</p>
+              <ul>
+                <li>Dynamic token priorities based on your current buffs</li>
+                <li>Easy priority controls that adapt to the way you play</li>
+                <li>High-performance models for both high and low-end devices</li>
+              </ul>
+              <img src="https://revolutionmacro.com/images/product/ai-gather-fields.png" alt="Revolution Macro Gather tab with three AI Gather fields, gathering Pine Tree" width="1210" height="886" loading="lazy">
+            </article>
+
+            <article class="feature" data-shot="1">
+              <h3><span style="color:#60a5fa">Interactive</span> Planter Scheduling</h3>
+              <p><a class="docs-link" href="https://revolutionmacro.com/docs/planters/planter-timeline/">Planter Studio</a> is a fully featured, modern scheduling system for your planters. Create custom schedules and visualize the nectar you'll collect over time.</p>
+              <ul>
+                <li>Timeline-based interactive scheduling with full visibility</li>
+                <li>Customizable AI algorithms that manage planters for you</li>
+                <li>Advanced pathing that collects and harvests in minutes</li>
+              </ul>
+              <img src="https://revolutionmacro.com/images/product/planter-timeline.png" alt="Planter Studio timeline with planter tracks across three cycles" width="1210" height="886" loading="lazy">
+            </article>
+
+            <article class="feature" data-shot="2">
+              <h3>Record-Breaking <span style="color:#60a5fa">Vic Hop</span></h3>
+              <p><a class="docs-link" href="https://revolutionmacro.com/docs/tools/vic-hop/">Hop public servers</a> and collect hundreds of stingers per day. Revolution searches servers at record speed, taking only about one minute per server.</p>
+              <ul>
+                <li>Choose exactly which fields to search</li>
+                <li>Connect multiple alts to increase stinger counts</li>
+                <li>AI battle locks onto Vicious Bee for quick kills</li>
+              </ul>
+              <img src="https://revolutionmacro.com/images/product/vic-hop.png" alt="Vic Hop settings with Enabled on, role set to Main, and Server Hop on" width="1210" height="886" loading="lazy">
+            </article>
+
+            <article class="feature" data-shot="3">
+              <h3>Intelligent <span style="color:#60a5fa">RBC Alt</span> Automation</h3>
+              <p>Keep your <a class="docs-link" href="https://revolutionmacro.com/docs/tools/rbc-alt-gather/">alts</a> exactly where they need to be during RBC. AI-powered pathfinding pollinates quest fields with zero input required.</p>
+              <ul>
+                <li>Automatic quest detection and completion tracking</li>
+                <li>AI pathfinding for optimal field transitions</li>
+                <li>Simple controls for manual alt management</li>
+              </ul>
+              <img src="https://revolutionmacro.com/images/product/rbc-field-picker.png" alt="RBC Gather Field Picker with Alt 1 selected and the field grid by bee zone" width="1210" height="886" loading="lazy">
+            </article>
+          </div>
+        </div>
+
+        <div class="features-media">
+          <div class="features-media-inner">
+            <img class="active" data-shot="0" src="https://revolutionmacro.com/images/product/ai-gather-fields.png" alt="Revolution Macro Gather tab with three AI Gather fields, gathering Pine Tree" width="1210" height="886">
+            <img data-shot="1" src="https://revolutionmacro.com/images/product/planter-timeline.png" alt="Planter Studio timeline with planter tracks across three cycles" width="1210" height="886">
+            <img data-shot="2" src="https://revolutionmacro.com/images/product/vic-hop.png" alt="Vic Hop settings with Enabled on, role set to Main, and Server Hop on" width="1210" height="886">
+            <img data-shot="3" src="https://revolutionmacro.com/images/product/rbc-field-picker.png" alt="RBC Gather Field Picker with Alt 1 selected and the field grid by bee zone" width="1210" height="886">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="materials">
+    <div class="wrap">
+      <h2 class="sec-title" data-rise>Materials</h2>
+      <p class="sec-sub" data-rise>Automate material collection so you can focus on what matters.</p>
+      <div class="materials-grid">
+
+        <article class="materials-card materials-card--bug" data-rise>
+          <img class="materials-art materials-art--bug" src="https://revolutionmacro.com/images/materials/ladybug-field-background.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="copy">
+            <h3>AI <span class="grad">Bug</span> Run</h3>
+            <p>Automatically finds and <a class="docs-link" href="https://revolutionmacro.com/docs/bosses-and-buffs/bug-runs/">farms bugs</a> for materials.</p>
+          </div>
+          <img class="materials-app-screenshot" src="https://revolutionmacro.com/images/product/bug-run.png" alt="Bug Run settings for Ladybug with field switches, Kill All, and Collect Loot on" width="1210" height="886" loading="lazy">
+        </article>
+
+        <article class="materials-card materials-card--vic" data-rise>
+          <img class="materials-art materials-art--vic" src="https://revolutionmacro.com/images/materials/vic-hop-background.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="copy">
+            <h3><span class="grad">Vic</span> Hop</h3>
+            <p>Automatically <a class="docs-link" href="https://revolutionmacro.com/docs/tools/vic-hop/">hops servers for Vicious Bees</a> to collect stingers faster.</p>
+          </div>
+        </article>
+
+        <article class="materials-card materials-card--mondo" data-rise>
+          <img class="materials-art materials-art--mondo" src="https://revolutionmacro.com/images/materials/mondo-hop-background.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="copy">
+            <h3><span class="grad">Mondo</span> Hop</h3>
+            <p>Hops servers for <a class="docs-link" href="https://revolutionmacro.com/docs/bosses-and-buffs/mondo-chick-and-hop/">Mondo Chick</a> and collects materials.</p>
+          </div>
+        </article>
+
+        <article class="materials-card materials-card--memory" data-rise>
+          <img class="materials-art materials-art--memory" src="https://revolutionmacro.com/images/materials/memory-match-frame.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="copy">
+            <h3><span class="grad">Memory</span> Match</h3>
+            <p>Automatically plays <a class="docs-link" href="https://revolutionmacro.com/docs/collect-and-quests/memory-match/">Memory Match</a> for materials and rewards.</p>
+          </div>
+          <img class="materials-app-screenshot" src="https://revolutionmacro.com/images/product/memory-match.png" alt="Basic Memory Match enabled loot grid" width="1210" height="886" loading="lazy">
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="quests">
+    <div class="wrap">
+      <div class="quests-grid">
+        <div>
+          <h2 class="sec-title" data-rise>Automate <span class="grad">quests</span></h2>
+          <p class="sec-sub" data-rise>Let Revolution handle the repetitive work. Choose which <a class="docs-link" href="https://revolutionmacro.com/docs/collect-and-quests/automate-quests/">quests</a> you want to complete and grind overnight, helping you to make the progress you need.</p>
+          <dl>
+            <div data-rise><dt>Quick Setup</dt><dd>Choose the quest givers you want to automate.</dd></div>
+            <div data-rise><dt>Smart Routing</dt><dd>Navigate between fields and complete quests with precision.</dd></div>
+            <div data-rise><dt>Advanced Bloom Support</dt><dd>Revolution targets blooms and collects petals directly</dd></div>
+          </dl>
+        </div>
+        <div class="video-frame" data-rise>
+          <video class="quests-video" id="quests-video"
+            poster="https://revolutionmacro.com/images/product/rbc-field-picker.png"
+            muted loop playsinline preload="metadata"
+            aria-label="Revolution Macro flying to Polar Bear and automating quests">
+            <source src="https://revolutionmacro.com/videos/quests.mp4" type="video/mp4">
+            <source src="https://revolutionmacro.com/videos/blue-boost-30s.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="endgame">
+    <div class="wrap">
+      <h2 class="sec-title" data-rise>Take your hive <span class="grad">even further.</span></h2>
+      <p class="sec-sub" data-rise>Fine-tune your honeymaking setup with the most advanced strategies.</p>
+      <div class="endgame-grid">
+        <article class="endgame-card" data-rise>
+          <figure class="endgame-shot">
+            <img src="https://revolutionmacro.com/images/product/tad-sync.png" alt="Tad Sync settings with Enabled on and role set to Main" width="1210" height="886" loading="lazy">
+          </figure>
+          <div class="endgame-copy">
+            <h3>Tad Sync</h3>
+            <p>Keep your <a class="docs-link" href="https://revolutionmacro.com/docs/tools/tadsync/">field pollinated</a>. Revolution automatically moves alts to your boosted field.</p>
+          </div>
+        </article>
+        <article class="endgame-card" data-rise>
+          <figure class="endgame-shot">
+            <img src="https://revolutionmacro.com/images/product/auto-field-boost.png" alt="Auto Field Boost settings enabled for the active gather field" width="1210" height="886" loading="lazy">
+          </figure>
+          <div class="endgame-copy">
+            <h3>Auto Field Boost</h3>
+            <p>Automate <a class="docs-link" href="https://revolutionmacro.com/docs/bosses-and-buffs/auto-field-boost/">field boosting</a> and upkeep your field boost while you macro.</p>
+          </div>
+        </article>
+        <article class="endgame-card" data-rise>
+          <figure class="endgame-shot">
+            <img src="https://revolutionmacro.com/images/product/boosts.png" alt="Gather Boosts tab with Blue Extract selected and a 10:00 timer" width="1210" height="886" loading="lazy">
+          </figure>
+          <div class="endgame-copy">
+            <h3>Boosts</h3>
+            <p>Make your macro use the <a class="docs-link" href="https://revolutionmacro.com/docs/gathering/hotbar-and-boosts/">materials</a> you need to maximize your honey while gathering.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="wrap">
+      <h2 class="sec-title" data-rise>Frequently asked questions</h2>
+      <p class="sec-sub" data-rise>A few things you might be wondering before you get started.</p>
+    </div>
+
+    <div class="marquee" data-rise>
+      <div class="marquee-track">
+        <article class="faq-card"><h3>Is it free?</h3><p>Yes, and it stays free. Pro is a separate subscription for <a class="docs-link" href="https://revolutionmacro.com/docs/gathering/set-up-ai-gather/">Red AI</a> and a few power features.</p></article>
+        <article class="faq-card"><h3>Will I get banned?</h3><p>Revolution reads your screen and uses your mouse and keyboard, the same way you play. It never injects into Roblox or touches game files, which is what actually gets accounts banned.</p></article>
+        <article class="faq-card"><h3>Why did my antivirus flag it?</h3><p>Anything that controls your mouse and keyboard gets flagged eventually, and other macros have the same problem.</p></article>
+        <article class="faq-card"><h3>I already use another macro. Do I start over?</h3><p>No. <a class="docs-link" href="https://revolutionmacro.com/docs/getting-started/migrating-presets/">Import a preset</a> and you're gathering in a minute. The meta settings ship by default.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>Is it free?</h3><p>Yes, and it stays free. Pro is a separate subscription for Red AI and a few power features.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>Will I get banned?</h3><p>Revolution reads your screen and uses your mouse and keyboard, the same way you play. It never injects into Roblox or touches game files.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>Why did my antivirus flag it?</h3><p>Anything that controls your mouse and keyboard gets flagged eventually.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>I already use another macro. Do I start over?</h3><p>No. Import a preset and you're gathering in a minute.</p></article>
+      </div>
+    </div>
+
+    <div class="marquee" data-rise style="margin-top:20px">
+      <div class="marquee-track rev">
+        <article class="faq-card"><h3>What do I need to run it?</h3><p><a class="docs-link" href="https://revolutionmacro.com/docs/getting-started/install-windows/">Windows</a>, <a class="docs-link" href="https://revolutionmacro.com/docs/getting-started/install-macos/">macOS</a>, or Linux, with Roblox installed on the same PC.</p></article>
+        <article class="faq-card"><h3>Can I run alts?</h3><p>Yes. Put every account on the <a class="docs-link" href="https://revolutionmacro.com/docs/multi-account/connect-accounts-relay/">same relay</a> and they coordinate.</p></article>
+        <article class="faq-card"><h3>Where do I get help?</h3><p><a class="docs-link" href="https://revolutionmacro.com/docs/getting-started/first-gathering-session/">Docs</a> for setup, <a href="https://discord.com/invite/HDJk6aEyt4" target="_blank" rel="noopener">Discord</a> for a fast answer.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>What do I need to run it?</h3><p>Windows, macOS, or Linux, with Roblox installed on the same PC.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>Can I run alts?</h3><p>Yes. Put every account on the same relay and they coordinate.</p></article>
+        <article class="faq-card" aria-hidden="true"><h3>Where do I get help?</h3><p>Docs for setup, Discord for a fast answer.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="download">
+    <div class="wrap">
+      <h2 data-rise>What are you waiting for?<br><span class="grad">Download now.</span></h2>
+      <p data-rise>Get up and running in with the most advanced macro for Bee Swarm Simulator in minutes.</p>
+      <div class="hero-cta" data-rise>
+        <a class="btn btn-primary" href="https://revolutionmacro.com/download">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 5h2.4v6.3l2.6-2.6 1.7 1.7-5.5 5.5-5.5-5.5 1.7-1.7 2.6 2.6z"/></svg>
+          Download for Windows
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://discord.com/invite/HDJk6aEyt4" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+      <p class="tiny" data-rise>Available for Windows, macOS, and Linux</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div data-rise>
+        <a class="footer-brand" href="/" aria-label="Revolution Macro home">
+          <img src="https://revolutionmacro.com/images/brand/logo.webp" alt="" width="384" height="384" loading="lazy">
+          <span>Revolution<br>Macro</span>
+        </a>
+        <p class="tagline">The last macro you'll ever need</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation" data-rise>
+        <div>
+          <h3>Explore</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/download">Download</a></li>
+            <li><a href="/docs/">Documentation</a></li>
+            <li><a href="/pro">Revolution Pro</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Community</h3>
+          <ul>
+            <li><a href="https://discord.com/invite/HDJk6aEyt4" target="_blank" rel="noopener">Discord ↗</a></li>
+            <li><a href="https://github.com/nosyliam/revolution-macro" target="_blank" rel="noopener">GitHub ↗</a></li>
+            <li><a href="https://www.youtube.com/@RevolutionMacro" target="_blank" rel="noopener">YouTube ↗</a></li>
+            <li><a href="https://www.tiktok.com/@revolution.macro" target="_blank" rel="noopener">TikTok ↗</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Revolution Software LLC.</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="https://dashboard.revolutionmacro.com/legal/tos">Terms of Service</a>
+        <a href="https://dashboard.revolutionmacro.com/legal/privacy">Privacy Policy</a>
+        <a href="https://revolutionmacro.com/legal/refund.html">Refund Policy</a>
+        <a href="https://revolutionmacro.com/legal/discord-bot/terms.html">Support Bot Terms</a>
+        <a href="https://revolutionmacro.com/legal/discord-bot/privacy.html">Support Bot Privacy</a>
+      </nav>
+      <p><a href="https://www.stlwebstudio.com/" target="_blank" rel="noopener">Made with extra <span class="heart">♥</span> by Daniel.</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const burger = document.getElementById('burger');
+const mnav = document.getElementById('mobile-nav');
+burger.addEventListener('click', () => {
+  const open = mnav.classList.toggle('open');
+  burger.setAttribute('aria-expanded', String(open));
+});
+
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+document.querySelectorAll('[data-rise]').forEach(el => io.observe(el));
+
+const shots = document.querySelectorAll('.features-media img');
+const feats = document.querySelectorAll('.feature');
+const swapper = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const i = e.target.dataset.shot;
+    shots.forEach(s => s.classList.toggle('active', s.dataset.shot === i));
+  });
+}, { threshold: 0.55 });
+feats.forEach(f => swapper.observe(f));
+
+const qv = document.getElementById('quests-video');
+const vObs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) { qv.play().catch(() => {}); } else { qv.pause(); }
+  });
+}, { threshold: 0.35 });
+vObs.observe(qv);
+</script>
+</body>
+</html>
